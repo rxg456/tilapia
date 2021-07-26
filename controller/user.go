@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"tilapia/dao/mysql"
 	"tilapia/dao/redis"
 	"tilapia/models"
@@ -15,7 +16,6 @@ import (
 type LoginResource struct {
 	Username string `form:"username"`
 	Password string `form:"password"`
-	Secret   string `form:"secret"`
 }
 
 func Login(c *gin.Context) {
@@ -97,4 +97,98 @@ func Login(c *gin.Context) {
 		return
 	}
 
+}
+
+func Logout(c *gin.Context) {
+	var user models.User
+
+	Uid, _ := c.Get("Uid")
+	mysql.DB.Find(&user, Uid)
+	user.AccessToken = ""
+	err := mysql.DB.Save(&user).Error
+	if err != nil {
+		zap.L().Error("logout db save faild", zap.Error(err))
+		util.JsonRespond(500, err.Error(), "", c)
+		return
+	}
+	util.JsonRespond(200, "退出成功", "", c)
+}
+
+func GetUserMenu(c *gin.Context) {
+	var mps []*models.MenuPermissions
+	var res []models.MenuPermissions
+
+	tmp := make(map[int]*models.MenuPermissions)
+	data := make(map[string]interface{})
+	rid := c.Param("id")
+
+	// 用户菜单列表
+	key := redis.RoleMenuListKey
+	str := fmt.Sprintf("%v", rid)
+	key = key + str
+	v, err := redis.Rdb.Get(key).Result()
+	if err != nil {
+		zap.L().Error("rolemenulist get faild", zap.Error(err))
+	}
+	if v != "" {
+		data["lists"] = util.JsonUnmarshalFromString(v, &res)
+		util.JsonRespond(200, "", data, c)
+		return
+	}
+	// 超级用户返回所有菜单
+	if rid == "0" {
+		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Find(&mps)
+		for _, p := range mps {
+			if x, ok := tmp[p.ID]; ok {
+				p.Children = x.Children
+			}
+			tmp[p.ID] = p
+			if p.Pid != 0 {
+				if x, ok := tmp[p.Pid]; ok {
+					x.Children = append(x.Children, p)
+				} else {
+					tmp[p.Pid] = &models.MenuPermissions{
+						Children: []*models.MenuPermissions{p},
+					}
+				}
+			}
+		}
+	} else {
+		// 普通用户 根据 rid 返回菜单项
+		pids := []int{}
+		mysql.DB.Table("menu_permissions").
+			Select("menu_permissions.pid").
+			Joins("left join role_permission_rel on menu_permissions.id = role_permission_rel.pid").
+			Where("role_permission_rel.rid = ?", rid).
+			Pluck("DISTINCT menu_permissions.pid", &pids)
+
+		mysql.DB.Model(&models.MenuPermissions{}).
+			Where("type = ?", 1).
+			Find(&mps)
+
+		for _, v := range mps {
+			for _, p := range pids {
+				if _, ok := tmp[v.ID]; !ok {
+					tmp[v.ID] = v
+				}
+
+				if p == v.ID {
+					if x, ok := tmp[v.Pid]; ok {
+						x.Children = append(x.Children, v)
+					}
+				}
+			}
+		}
+	}
+
+	for _, v := range tmp {
+		if v.Pid == 0 {
+			res = append(res, *v)
+		}
+	}
+
+	redis.Rdb.Set(key, util.JSONMarshalToString(res), 0)
+
+	data["lists"] = res
+	util.JsonRespond(200, "", data, c)
 }

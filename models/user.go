@@ -21,6 +21,19 @@ type User struct {
 	TokenExpired int64
 }
 
+// 菜单权限
+type MenuPermissions struct {
+	Model
+	Pid        int
+	Name       string
+	Type       int
+	Permission string
+	Url        string
+	Icon       string
+	Desc       string
+	Children   []*MenuPermissions `json:"children"`
+}
+
 func (u *User) ReturnPermissions() []string {
 	var res []string
 	if u.IsSupper != 1 {

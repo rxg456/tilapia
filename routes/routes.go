@@ -24,6 +24,8 @@ func Setup(mode string) *gin.Engine {
 	{
 		// 用户登录
 		apiv1.POST("/user/login", controller.Login)
+		apiv1.POST("/user/logout", controller.Logout)
+		apiv1.GET("/user/perms/:id", controller.GetUserMenu)
 	}
 
 	return r
