@@ -39,6 +39,13 @@ func Setup(mode string) *gin.Engine {
 		apiv1.DELETE("/perms/:id", controller.DeletePerms)
 		apiv1.GET("/perms/lists", controller.GetAllPerms)
 
+		apiv1.GET("/roles", controller.GetRole)
+		apiv1.POST("/roles", controller.PostRole)
+		apiv1.PUT("/roles/:id", controller.PutRole)
+		apiv1.DELETE("/roles/:id", controller.DeleteRole)
+		apiv1.GET("/roles/:id/permissions", controller.GetRolePerms)
+		apiv1.POST("/roles/:id/permissions", controller.PostRolePerms)
+
 	}
 
 	return r

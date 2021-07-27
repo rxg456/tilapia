@@ -18,3 +18,7 @@ func CheckMemberByKey(key string, val interface{}) bool {
 	isMember, _ := Rdb.SIsMember(key, val).Result()
 	return isMember
 }
+
+func DelKey(key string) {
+	Rdb.Del(key).Val()
+}
