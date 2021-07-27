@@ -2,9 +2,9 @@ package mysql
 
 import (
 	"fmt"
-	"tilapia/settings"
 	"log"
 	"os"
+	"tilapia/settings"
 	"time"
 
 	"go.uber.org/zap"
@@ -29,10 +29,10 @@ func Init(cfg *settings.MySQLConfig) (err error) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
-			SlowThreshold:             time.Second, // Slow SQL threshold
-			LogLevel:                  logger.Info, // Log level
+			SlowThreshold: time.Second, // Slow SQL threshold
+			LogLevel:      logger.Info, // Log level
 			IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
-			Colorful:                  true,        // Disable color
+			Colorful: true, // Disable color
 		},
 	)
 	// 也可以使用MustConnect连接不成功就panic

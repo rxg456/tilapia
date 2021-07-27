@@ -4,16 +4,16 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"tilapia/dao/mysql"
-	"tilapia/dao/redis"
-	"tilapia/logger"
-	"tilapia/routes"
-	"tilapia/settings"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"tilapia/dao/mysql"
+	"tilapia/dao/redis"
+	"tilapia/logger"
+	"tilapia/routes"
+	"tilapia/settings"
 	"time"
 
 	"go.uber.org/zap"
@@ -31,8 +31,6 @@ func main() {
 		fmt.Printf("init settings failed, err:%v\n", err)
 		return
 	}
-	fmt.Println(settings.Conf)
-	fmt.Println(settings.Conf.LogConfig == nil)
 	// 2. 初始化日志
 	if err := logger.Init(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("init logger failed, err:%v\n", err)

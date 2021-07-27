@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"tilapia/dao/mysql"
 	"tilapia/dao/redis"
 	"tilapia/middleware"
@@ -126,17 +127,19 @@ func Logout(c *gin.Context) {
 	util.JsonRespond(200, "退出成功", "", c)
 }
 
+// 用户菜单列表
 func GetUserMenu(c *gin.Context) {
 	var mps []*models.MenuPermissions
 	var res []models.MenuPermissions
+	var user models.User
 
 	tmp := make(map[int]*models.MenuPermissions)
 	data := make(map[string]interface{})
-	rid := c.Param("id")
+	uid := c.Param("id")
 
 	// 用户菜单列表
 	key := redis.RoleMenuListKey
-	str := fmt.Sprintf("%v", rid)
+	str := fmt.Sprintf("%v", uid)
 	key = key + str
 	v, err := redis.Rdb.Get(key).Result()
 	if err != nil {
@@ -147,9 +150,19 @@ func GetUserMenu(c *gin.Context) {
 		util.JsonRespond(200, "", data, c)
 		return
 	}
+
+	// 获取用户角色id
+	uids := strings.SplitN(uid, "=", 2)
+	if err := mysql.DB.Where("id = ?", uids[1]).First(&user).Error; err != nil {
+		util.JsonRespond(500, "用户不存在！", "", c)
+		zap.L().Error("用户不存在:", zap.Error(err))
+		return
+	}
+
 	// 超级用户返回所有菜单
-	if rid == "0" {
-		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Find(&mps)
+	if user.Rid == 0 {
+		mysql.DB.Model(&models.MenuPermissions{}).Where("type = ?", 1).Find(&mps)
+		fmt.Printf("%v", mps)
 		for _, p := range mps {
 			if x, ok := tmp[p.ID]; ok {
 				p.Children = x.Children
@@ -171,7 +184,7 @@ func GetUserMenu(c *gin.Context) {
 		mysql.DB.Table("menu_permissions").
 			Select("menu_permissions.pid").
 			Joins("left join role_permission_rel on menu_permissions.id = role_permission_rel.pid").
-			Where("role_permission_rel.rid = ?", rid).
+			Where("role_permission_rel.rid = ?", user.Rid).
 			Pluck("DISTINCT menu_permissions.pid", &pids)
 
 		mysql.DB.Model(&models.MenuPermissions{}).

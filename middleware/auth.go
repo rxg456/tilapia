@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"strings"
 	"tilapia/dao/mysql"
 	"tilapia/dao/redis"
 	"tilapia/models"
@@ -22,13 +23,19 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		}
 
 		token := c.Request.Header.Get("Authorization")
+		parts := strings.SplitN(token, " ", 2)
+		if !(len(parts) == 2 && parts[0] == "Bearer") {
+			util.JsonRespond(401, "API token required", "", c)
+			c.Abort()
+			return
+		}
+		token = parts[1]
 
 		if token == "" {
 			util.JsonRespond(401, "API token required", "", c)
 			c.Abort()
 			return
 		}
-
 		e := mysql.DB.Where("access_token = ?", token).First(&user).Error
 		if e != nil {
 			util.JsonRespond(401, "Invalid API token, please login", "", c)
