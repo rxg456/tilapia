@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"fmt"
 	"tilapia/dao/mysql"
+	"tilapia/dao/redis"
 	"tilapia/models"
 	"tilapia/pkg/util"
 	"time"
@@ -42,5 +44,28 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		c.Set("UserRid", user.Rid)
 		c.Set("Uid", user.ID)
 		c.Next()
+	}
+}
+
+func PermissionCheckMiddleware(c *gin.Context, perm string) bool {
+	UserIsSupper, _ := c.Get("UserIsSupper")
+
+	// 超级用户不做权限检查
+	if UserIsSupper != 1 {
+		key := redis.RoleRermsSetKey
+		UserRid, _ := c.Get("UserRid")
+		str := fmt.Sprintf("%v", UserRid)
+		user_key := key + str
+
+		// redis是否有key值
+		if err := redis.Rdb.Exists(user_key).Val(); err != 1 {
+			rid, _ := UserRid.(int)
+			models.SetRolePermToSet(user_key, rid)
+		}
+
+		// 检查对应的set是否有该角色权限
+		return redis.CheckMemberByKey(user_key, perm)
+	} else {
+		return true
 	}
 }

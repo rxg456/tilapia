@@ -26,6 +26,13 @@ func Setup(mode string) *gin.Engine {
 		apiv1.POST("/user/login", controller.Login)
 		apiv1.POST("/user/logout", controller.Logout)
 		apiv1.GET("/user/perms/:id", controller.GetUserMenu)
+
+		apiv1.GET("/user", controller.GetUsers)
+		apiv1.POST("/user", controller.PostUser)
+		apiv1.PUT("/user/:id", controller.PutUser)
+		apiv1.PATCH("/user/:id", controller.PatchUser)
+		apiv1.DELETE("/user/:id", controller.DeleteUser)
+
 	}
 
 	return r

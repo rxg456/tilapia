@@ -2,6 +2,7 @@ package models
 
 import (
 	"tilapia/dao/mysql"
+	"tilapia/dao/redis"
 
 	"go.uber.org/zap"
 )
@@ -58,4 +59,21 @@ func (u *User) ReturnPermissions() []string {
 	}
 
 	return res
+}
+
+func SetRolePermToSet(key string, rid int) {
+	var mps []MenuPermissions
+
+	mysql.DB.Table("menu_permissions").
+		Select("menu_permissions.permission").
+		Joins("left join role_permission_rel on menu_permissions.id = role_permission_rel.pid").
+		Where("role_permission_rel.rid = ?", rid).
+		Find(&mps)
+
+	for _, v := range mps {
+		err := redis.SetValBySetKey(key, v.Permission)
+		if err != nil {
+			zap.L().Error("SetRolePermToSet faild", zap.Error(err))
+		}
+	}
 }
