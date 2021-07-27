@@ -33,6 +33,12 @@ func Setup(mode string) *gin.Engine {
 		apiv1.PATCH("/user/:id", controller.PatchUser)
 		apiv1.DELETE("/user/:id", controller.DeleteUser)
 
+		apiv1.GET("/perms", controller.GetPerms)
+		apiv1.POST("/perms", controller.PostPerms)
+		apiv1.PUT("/perms/:id", controller.PutPerms)
+		apiv1.DELETE("/perms/:id", controller.DeletePerms)
+		apiv1.GET("/perms/lists", controller.GetAllPerms)
+
 	}
 
 	return r
