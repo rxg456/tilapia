@@ -1,0 +1,85 @@
+{"level":"DEBUG","time":"2021-07-29T00:33:08.128+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"INFO","time":"2021-07-29T00:33:31.057+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/login","status":200,"method":"POST","path":"/apiv1/user/login","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":1.2383498}
+{"level":"INFO","time":"2021-07-29T00:33:45.585+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.3171417}
+{"level":"ERROR","time":"2021-07-29T00:34:13.119+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:34:13.312+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5227664}
+{"level":"INFO","time":"2021-07-29T00:34:40.869+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T00:34:40.870+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T00:37:01.729+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"INFO","time":"2021-07-29T00:37:05.468+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.3400905}
+{"level":"ERROR","time":"2021-07-29T00:37:12.142+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:37:12.333+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5206109}
+{"level":"ERROR","time":"2021-07-29T00:38:44.430+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:38:44.624+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5415536}
+{"level":"INFO","time":"2021-07-29T00:39:01.489+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T00:39:01.490+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T00:47:58.358+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T00:48:05.722+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:48:05.910+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5046523}
+{"level":"ERROR","time":"2021-07-29T00:48:17.057+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:48:17.234+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4880625}
+{"level":"INFO","time":"2021-07-29T00:48:24.224+0800","caller":"logger/logger.go:70","msg":"/apiv1/perms/lists","status":401,"method":"GET","path":"/apiv1/perms/lists","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.0877665}
+{"level":"INFO","time":"2021-07-29T00:48:33.079+0800","caller":"logger/logger.go:70","msg":"/apiv1/perms/lists","status":200,"method":"GET","path":"/apiv1/perms/lists","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.415475}
+{"level":"ERROR","time":"2021-07-29T00:49:18.109+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:49:18.292+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5008511}
+{"level":"INFO","time":"2021-07-29T00:58:15.805+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T00:58:15.806+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T00:58:19.388+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T00:58:33.355+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"ERROR","time":"2021-07-29T00:58:33.442+0800","caller":"controller/user.go:159","msg":"用户不存在:","error":"record not found"}
+{"level":"INFO","time":"2021-07-29T00:58:33.442+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=2","status":500,"method":"GET","path":"/apiv1/user/perms/id=2","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4019793}
+{"level":"ERROR","time":"2021-07-29T00:58:37.838+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:58:38.024+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5376952}
+{"level":"ERROR","time":"2021-07-29T00:58:47.073+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T00:58:47.255+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4957134}
+{"level":"INFO","time":"2021-07-29T01:00:53.069+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:00:53.070+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:00:56.485+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:01:02.086+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:01:02.266+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5000279}
+{"level":"ERROR","time":"2021-07-29T01:01:12.566+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:01:12.755+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5096351}
+{"level":"INFO","time":"2021-07-29T01:01:33.967+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:01:33.967+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:01:37.532+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:01:51.749+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:01:51.932+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5072063}
+{"level":"ERROR","time":"2021-07-29T01:02:02.705+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:02:02.894+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5105081}
+{"level":"INFO","time":"2021-07-29T01:03:28.016+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:03:28.017+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:03:31.388+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:03:34.456+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:03:34.645+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5487677}
+{"level":"ERROR","time":"2021-07-29T01:03:51.138+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:03:51.323+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5188623}
+{"level":"INFO","time":"2021-07-29T01:04:03.709+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:04:03.709+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:04:06.969+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:04:10.797+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:04:10.983+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.5053303}
+{"level":"INFO","time":"2021-07-29T01:04:49.275+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:04:49.275+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:04:52.625+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:05:00.728+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:05:00.902+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4858324}
+{"level":"INFO","time":"2021-07-29T01:05:18.092+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:05:18.093+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:05:21.499+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:05:26.501+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:05:26.675+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.485143}
+{"level":"INFO","time":"2021-07-29T01:05:55.317+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:05:55.317+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:05:58.279+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"INFO","time":"2021-07-29T01:08:42.523+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:08:42.523+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:08:45.538+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:08:51.303+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:08:51.486+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4986668}
+{"level":"INFO","time":"2021-07-29T01:10:44.691+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:10:44.692+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}
+{"level":"DEBUG","time":"2021-07-29T01:10:47.690+0800","caller":"tilapia/main.go:40","msg":"logger init success..."}
+{"level":"ERROR","time":"2021-07-29T01:10:51.802+0800","caller":"controller/user.go:147","msg":"rolemenulist get faild","error":"redis: nil"}
+{"level":"INFO","time":"2021-07-29T01:10:51.984+0800","caller":"logger/logger.go:70","msg":"/apiv1/user/perms/id=1","status":200,"method":"GET","path":"/apiv1/user/perms/id=1","query":"","ip":"127.0.0.1","user-agent":"PostmanRuntime/7.26.8","errors":"","cost":0.4886975}
+{"level":"INFO","time":"2021-07-29T01:12:41.585+0800","caller":"tilapia/main.go:76","msg":"Shutdown Server ..."}
+{"level":"INFO","time":"2021-07-29T01:12:41.585+0800","caller":"tilapia/main.go:85","msg":"Server exiting"}

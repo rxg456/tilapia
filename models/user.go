@@ -23,8 +23,8 @@ type User struct {
 }
 
 // 菜单权限
-type MenuPermissions struct {
-	Model
+type MenuPerms struct {
+	ID         int `gorm:"primary_key" json:"id"`
 	Pid        int
 	Name       string
 	Type       int
@@ -32,7 +32,19 @@ type MenuPermissions struct {
 	Url        string
 	Icon       string
 	Desc       string
-	Children   []*MenuPermissions `json:"children"`
+	Children   []MenuPermissions `json:"children"`
+}
+
+// 递归菜单权限
+type MenuPermissions struct {
+	ID         int `gorm:"primary_key" json:"id"`
+	Pid        int
+	Name       string
+	Type       int
+	Permission string
+	Url        string
+	Icon       string
+	Desc       string
 }
 
 func (u *User) ReturnPermissions() []string {

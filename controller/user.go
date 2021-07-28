@@ -129,11 +129,12 @@ func Logout(c *gin.Context) {
 
 // 用户菜单列表
 func GetUserMenu(c *gin.Context) {
-	var mps []*models.MenuPermissions
-	var res []models.MenuPermissions
+	var perms []models.MenuPermissions
+
+	var res []models.MenuPerms
 	var user models.User
 
-	tmp := make(map[int]*models.MenuPermissions)
+	tmp := make(map[int]*models.MenuPerms)
 	data := make(map[string]interface{})
 	uid := c.Param("id")
 
@@ -161,19 +162,26 @@ func GetUserMenu(c *gin.Context) {
 
 	// 超级用户返回所有菜单
 	if user.Rid == 0 {
-		mysql.DB.Model(&models.MenuPermissions{}).Where("type = ?", 1).Find(&mps)
-		fmt.Printf("%v", mps)
-		for _, p := range mps {
-			if x, ok := tmp[p.ID]; ok {
-				p.Children = x.Children
-			}
-			tmp[p.ID] = p
-			if p.Pid != 0 {
+		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Order("id ASC").Find(&perms)
+		fmt.Printf("%v", perms)
+		for _, p := range perms {
+			if p.Pid == 0 {
+				tmp[p.ID] = &models.MenuPerms{
+					ID:         p.ID,
+					Pid:        p.Pid,
+					Name:       p.Name,
+					Type:       p.Type,
+					Permission: p.Permission,
+					Url:        p.Url,
+					Icon:       p.Icon,
+					Desc:       p.Desc,
+				}
+			} else {
 				if x, ok := tmp[p.Pid]; ok {
 					x.Children = append(x.Children, p)
 				} else {
-					tmp[p.Pid] = &models.MenuPermissions{
-						Children: []*models.MenuPermissions{p},
+					tmp[p.Pid] = &models.MenuPerms{
+						Children: []models.MenuPermissions{p},
 					}
 				}
 			}
@@ -187,14 +195,38 @@ func GetUserMenu(c *gin.Context) {
 			Where("role_permission_rel.rid = ?", user.Rid).
 			Pluck("DISTINCT menu_permissions.pid", &pids)
 
-		mysql.DB.Model(&models.MenuPermissions{}).
-			Where("type = ?", 1).
-			Find(&mps)
+		// mysql.DB.Model(&models.MenuPermissions{}).
+		// 	Where("type = ?", 1).
+		// 	Find(&mps)
 
-		for _, v := range mps {
+		// for _, v := range mps {
+		// 	for _, p := range pids {
+		// 		if _, ok := tmp[v.ID]; !ok {
+		// 			tmp[v.ID] = v
+		// 		}
+
+		// 		if p == v.ID {
+		// 			if x, ok := tmp[v.Pid]; ok {
+		// 				x.Children = append(x.Children, v)
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Find(&perms)
+		for _, v := range perms {
 			for _, p := range pids {
 				if _, ok := tmp[v.ID]; !ok {
-					tmp[v.ID] = v
+					tmp[v.ID] = &models.MenuPerms{
+						ID:         v.ID,
+						Pid:        v.Pid,
+						Name:       v.Name,
+						Type:       v.Type,
+						Permission: v.Permission,
+						Url:        v.Url,
+						Icon:       v.Icon,
+						Desc:       v.Desc,
+					}
 				}
 
 				if p == v.ID {
@@ -203,6 +235,26 @@ func GetUserMenu(c *gin.Context) {
 					}
 				}
 			}
+			// if p.Pid == 0 {
+			// 	tmp[p.ID] = &models.MenuPerms{
+			// 		ID:         p.ID,
+			// 		Pid:        p.Pid,
+			// 		Name:       p.Name,
+			// 		Type:       p.Type,
+			// 		Permission: p.Permission,
+			// 		Url:        p.Url,
+			// 		Icon:       p.Icon,
+			// 		Desc:       p.Desc,
+			// 	}
+			// } else {
+			// 	if x, ok := tmp[p.Pid]; ok {
+			// 		x.Children = append(x.Children, p)
+			// 	} else {
+			// 		tmp[p.Pid] = &models.MenuPerms{
+			// 			Children: []models.MenuPermissions{p},
+			// 		}
+			// 	}
+			// }
 		}
 	}
 

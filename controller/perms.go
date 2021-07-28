@@ -154,11 +154,11 @@ func DeletePerms(c *gin.Context) {
 
 // 获取所有的权限项
 func GetAllPerms(c *gin.Context) {
-	var mps []*models.MenuPermissions
-	var res []models.MenuPermissions
+	var perms []models.MenuPermissions
+	var res []models.MenuPerms
 
 	data := make(map[string]interface{})
-	tmp := make(map[int]*models.MenuPermissions)
+	tmp := make(map[int]*models.MenuPerms)
 
 	// 所有的mod page perm组合数据 放到redis里面
 	key := redis.AllPermsKey
@@ -170,24 +170,46 @@ func GetAllPerms(c *gin.Context) {
 		return
 	}
 
-	mysql.DB.Model(&models.MenuPermissions{}).Find(&mps)
+	mysql.DB.Model(&models.MenuPermissions{}).Find(&perms)
 
-	for _, p := range mps {
-		if x, ok := tmp[p.ID]; ok {
-			p.Children = x.Children
-		}
-		tmp[p.ID] = p
-		if p.Pid != 0 {
+	// for _, p := range mps {
+	// 	if x, ok := tmp[p.ID]; ok {
+	// 		p.Children = x.Children
+	// 	}
+	// 	tmp[p.ID] = p
+	// 	if p.Pid != 0 {
+	// 		if x, ok := tmp[p.Pid]; ok {
+	// 			x.Children = append(x.Children, p)
+	// 		} else {
+	// 			tmp[p.Pid] = &models.MenuPermissions{
+	// 				Children: []*models.MenuPermissions{p},
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	for _, p := range perms {
+		if p.Pid == 0 {
+			tmp[p.ID] = &models.MenuPerms{
+				ID:         p.ID,
+				Pid:        p.Pid,
+				Name:       p.Name,
+				Type:       p.Type,
+				Permission: p.Permission,
+				Url:        p.Url,
+				Icon:       p.Icon,
+				Desc:       p.Desc,
+			}
+		} else {
 			if x, ok := tmp[p.Pid]; ok {
 				x.Children = append(x.Children, p)
 			} else {
-				tmp[p.Pid] = &models.MenuPermissions{
-					Children: []*models.MenuPermissions{p},
+				tmp[p.Pid] = &models.MenuPerms{
+					Children: []models.MenuPermissions{p},
 				}
 			}
 		}
 	}
-
 	for _, v := range tmp {
 		if v.Pid == 0 {
 			res = append(res, *v)
