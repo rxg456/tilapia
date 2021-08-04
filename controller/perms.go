@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"sort"
 	"tilapia/dao/mysql"
 	"tilapia/dao/redis"
 	"tilapia/middleware"
@@ -133,7 +134,7 @@ func PutPerms(c *gin.Context) {
 
 }
 
-// 删除
+// 删除权限按钮
 func DeletePerms(c *gin.Context) {
 	if !middleware.PermissionCheckMiddleware(c, "perm-del") {
 		util.JsonRespond(403, "请求资源被拒绝", "", c)
@@ -155,7 +156,7 @@ func DeletePerms(c *gin.Context) {
 // 获取所有的权限项
 func GetAllPerms(c *gin.Context) {
 	var perms []models.MenuPermissions
-	var res []models.MenuPerms
+	var res util.SortMenuPerms
 
 	data := make(map[string]interface{})
 	tmp := make(map[int]*models.MenuPerms)
@@ -171,22 +172,6 @@ func GetAllPerms(c *gin.Context) {
 	}
 
 	mysql.DB.Model(&models.MenuPermissions{}).Find(&perms)
-
-	// for _, p := range mps {
-	// 	if x, ok := tmp[p.ID]; ok {
-	// 		p.Children = x.Children
-	// 	}
-	// 	tmp[p.ID] = p
-	// 	if p.Pid != 0 {
-	// 		if x, ok := tmp[p.Pid]; ok {
-	// 			x.Children = append(x.Children, p)
-	// 		} else {
-	// 			tmp[p.Pid] = &models.MenuPermissions{
-	// 				Children: []*models.MenuPermissions{p},
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	for _, p := range perms {
 		if p.Pid == 0 {
@@ -212,9 +197,10 @@ func GetAllPerms(c *gin.Context) {
 	}
 	for _, v := range tmp {
 		if v.Pid == 0 {
-			res = append(res, *v)
+			res = append(res, v)
 		}
 	}
+	sort.Stable(res)
 
 	redis.Rdb.Set(key, util.JSONMarshalToString(res), 0)
 

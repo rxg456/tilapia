@@ -78,8 +78,8 @@ func SetRolePermToSet(key string, rid int) {
 
 	mysql.DB.Table("menu_permissions").
 		Select("menu_permissions.permission").
-		Joins("left join role_permission_rel on menu_permissions.id = role_permission_rel.pid").
-		Where("role_permission_rel.rid = ?", rid).
+		Joins("left join role_permission_rels on menu_permissions.id = role_permission_rels.pid").
+		Where("role_permission_rels.rid = ?", rid).
 		Find(&mps)
 
 	for _, v := range mps {

@@ -20,13 +20,24 @@ CREATE TABLE `user` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
+-- ----------------------------
+-- Table structure for role
+-- ----------------------------
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '角色名',
+  `desc` varchar(255) NOT NULL DEFAULT '' COMMENT '角色介绍',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 
 -- ----------------------------
 -- Table structure for role_permission_rel
 -- ----------------------------
-DROP TABLE IF EXISTS `role_permission_rel`;
-CREATE TABLE `role_permission_rel` (
+DROP TABLE IF EXISTS `role_permission_rels`;
+CREATE TABLE `role_permission_rels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rid` int(11) NOT NULL DEFAULT '0' COMMENT '角色id',
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '权限id',

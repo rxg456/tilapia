@@ -14,12 +14,12 @@ import (
 )
 
 type RoleResource struct {
-	Name string `form:"Name"`
-	Desc string `form:"Desc"`
+	Name string `form:"name"`
+	Desc string `form:"desc"`
 }
 
 type RolePermResource struct {
-	Codes []int `json:Codes`
+	Codes []int `json:codes`
 }
 
 // 角色列表
@@ -83,6 +83,7 @@ func PostRole(c *gin.Context) {
 }
 
 // 删除角色
+// TODO 删除不存在的id也不报错
 func DeleteRole(c *gin.Context) {
 	if !middleware.PermissionCheckMiddleware(c, "role-del") {
 		util.JsonRespond(403, "请求资源被拒绝", "", c)
@@ -98,6 +99,7 @@ func DeleteRole(c *gin.Context) {
 }
 
 // 修改角色
+// TODO bug可以新增用户
 func PutRole(c *gin.Context) {
 	if !middleware.PermissionCheckMiddleware(c, "role-edit") {
 		util.JsonRespond(403, "请求资源被拒绝", "", c)
@@ -172,7 +174,7 @@ func PostRolePerms(c *gin.Context) {
 	rid, _ := strconv.Atoi(c.Param("id"))
 
 	if err := c.BindJSON(&data); err != nil {
-		zap.L().Error("Invalid MenuPermissions Data", zap.Error(err))
+		zap.L().Error("Invalid MenuPermissions Data:", zap.Error(err))
 		util.JsonRespond(500, "Invalid MenuPermissions Data", "", c)
 		return
 	}
@@ -187,13 +189,10 @@ func PostRolePerms(c *gin.Context) {
 		Select("id").
 		Where("type = ?", 1).
 		Find(&mps)
-
 	for _, v := range mps {
 		rds[v.ID] = v.ID
 	}
-
 	for _, v := range data.Codes {
-		//m, _ := strconv.Atoi(v)
 		if _, ok := rds[v]; ok {
 			continue
 		}

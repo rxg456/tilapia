@@ -3,7 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
+	"sort"
 	"tilapia/dao/mysql"
 	"tilapia/dao/redis"
 	"tilapia/middleware"
@@ -22,13 +22,13 @@ type LoginResource struct {
 }
 
 type UserResource struct {
-	Name     string `form:"Name"`
-	Nickname string `form:"Nickname"`
-	Mobile   string `form: Mobile`
-	Email    string `form: Email`
-	Rid      int    `form: Rid`
+	Name     string `form:"name"`
+	Nickname string `form:"nickname"`
+	Mobile   string `form:"mobile"`
+	Email    string `form:"email"`
+	Rid      int    `form:"rid"`
 	Password string `form:"password"`
-	IsActive int    `form:IsActive`
+	IsActive int    `form:"isActive"`
 }
 
 func Login(c *gin.Context) {
@@ -130,8 +130,7 @@ func Logout(c *gin.Context) {
 // 用户菜单列表
 func GetUserMenu(c *gin.Context) {
 	var perms []models.MenuPermissions
-
-	var res []models.MenuPerms
+	var res util.SortMenuPerms
 	var user models.User
 
 	tmp := make(map[int]*models.MenuPerms)
@@ -153,17 +152,20 @@ func GetUserMenu(c *gin.Context) {
 	}
 
 	// 获取用户角色id
-	uids := strings.SplitN(uid, "=", 2)
-	if err := mysql.DB.Where("id = ?", uids[1]).First(&user).Error; err != nil {
+	// uids := strings.SplitN(uid, "=", 2)
+	// if err := mysql.DB.Where("id = ?", uids[1]).First(&user).Error; err != nil {
+	// 	util.JsonRespond(500, "用户不存在！", "", c)
+	// 	zap.L().Error("用户不存在:", zap.Error(err))
+	// 	return
+	// }
+	if err := mysql.DB.Where("id = ?", uid).First(&user).Error; err != nil {
 		util.JsonRespond(500, "用户不存在！", "", c)
 		zap.L().Error("用户不存在:", zap.Error(err))
 		return
 	}
-
 	// 超级用户返回所有菜单
 	if user.Rid == 0 {
 		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Order("id ASC").Find(&perms)
-		fmt.Printf("%v", perms)
 		for _, p := range perms {
 			if p.Pid == 0 {
 				tmp[p.ID] = &models.MenuPerms{
@@ -191,27 +193,9 @@ func GetUserMenu(c *gin.Context) {
 		pids := []int{}
 		mysql.DB.Table("menu_permissions").
 			Select("menu_permissions.pid").
-			Joins("left join role_permission_rel on menu_permissions.id = role_permission_rel.pid").
-			Where("role_permission_rel.rid = ?", user.Rid).
+			Joins("left join role_permission_rels on menu_permissions.id = role_permission_rels.pid").
+			Where("role_permission_rels.rid = ?", user.Rid).
 			Pluck("DISTINCT menu_permissions.pid", &pids)
-
-		// mysql.DB.Model(&models.MenuPermissions{}).
-		// 	Where("type = ?", 1).
-		// 	Find(&mps)
-
-		// for _, v := range mps {
-		// 	for _, p := range pids {
-		// 		if _, ok := tmp[v.ID]; !ok {
-		// 			tmp[v.ID] = v
-		// 		}
-
-		// 		if p == v.ID {
-		// 			if x, ok := tmp[v.Pid]; ok {
-		// 				x.Children = append(x.Children, v)
-		// 			}
-		// 		}
-		// 	}
-		// }
 
 		mysql.DB.Model(&models.MenuPermissions{}).Where("type = 1").Find(&perms)
 		for _, v := range perms {
@@ -235,34 +219,15 @@ func GetUserMenu(c *gin.Context) {
 					}
 				}
 			}
-			// if p.Pid == 0 {
-			// 	tmp[p.ID] = &models.MenuPerms{
-			// 		ID:         p.ID,
-			// 		Pid:        p.Pid,
-			// 		Name:       p.Name,
-			// 		Type:       p.Type,
-			// 		Permission: p.Permission,
-			// 		Url:        p.Url,
-			// 		Icon:       p.Icon,
-			// 		Desc:       p.Desc,
-			// 	}
-			// } else {
-			// 	if x, ok := tmp[p.Pid]; ok {
-			// 		x.Children = append(x.Children, p)
-			// 	} else {
-			// 		tmp[p.Pid] = &models.MenuPerms{
-			// 			Children: []models.MenuPermissions{p},
-			// 		}
-			// 	}
-			// }
 		}
 	}
 
 	for _, v := range tmp {
 		if v.Pid == 0 {
-			res = append(res, *v)
+			res = append(res, v)
 		}
 	}
+	sort.Stable(res)
 
 	redis.Rdb.Set(key, util.JSONMarshalToString(res), 0)
 
