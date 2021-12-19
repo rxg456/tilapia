@@ -5,20 +5,98 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `rid` int(11) NOT NULL DEFAULT '0' COMMENT '角色id',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
-  `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
-  `password_hash` varchar(100) NOT NULL DEFAULT '' COMMENT 'hash密码',
-  `email` varchar(120) NOT NULL DEFAULT '' COMMENT '邮箱',
-  `mobile` varchar(30) NOT NULL DEFAULT '' COMMENT '电话',
-  `is_supper` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为超级用户',
-  `is_active` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否激活',
-  `access_token` varchar(120) NOT NULL DEFAULT '' COMMENT '用户token',
-  `token_expired` int(11) NOT NULL DEFAULT '0' COMMENT 'token过期时间',
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '角色id',
+  `username` varchar(20) NOT NULL DEFAULT '' COMMENT '账号',
+  `password` char(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `truename` varchar(10) NOT NULL DEFAULT '' COMMENT '用户名',
+  `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '电话',
+  `email` varchar(500) NOT NULL DEFAULT '' COMMENT '邮箱',
+  `status` int(11) unsigned NOT NULL DEFAULT '0'  COMMENT '用户状态',
+  `last_login_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户上次登录时间',
+  `last_login_ip` varchar(50) NOT NULL DEFAULT '' COMMENT '用户上次登录IP',
+  `ctime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户创建时间',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+  KEY `idx_username` (`username`),
+  KEY `idx_email` (`email`(20))
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '' COMMENT '角色名',
+  `privilege` varchar(2000) NOT NULL DEFAULT '' COMMENT '角色权限',
+  `ctime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '角色创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+
+
+-- ----------------------------
+-- Table structure for user_token
+-- ----------------------------
+DROP TABLE IF EXISTS `user_token`;
+CREATE TABLE `user_token` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '用户ID',
+  `token` varchar(100) NOT NULL DEFAULT '' COMMENT '用户token',
+  `expire` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '过期时间',
+  `ctime` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='用户token表';
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- CREATE TABLE `user` (
+--   `id` int(11) NOT NULL AUTO_INCREMENT,
+--   `rid` int(11) NOT NULL DEFAULT '0' COMMENT '角色id',
+--   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '用户名',
+--   `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
+--   `password_hash` varchar(100) NOT NULL DEFAULT '' COMMENT 'hash密码',
+--   `email` varchar(120) NOT NULL DEFAULT '' COMMENT '邮箱',
+--   `mobile` varchar(30) NOT NULL DEFAULT '' COMMENT '电话',
+--   `is_supper` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否为超级用户',
+--   `is_active` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否激活',
+--   `access_token` varchar(120) NOT NULL DEFAULT '' COMMENT '用户token',
+--   `token_expired` int(11) NOT NULL DEFAULT '0' COMMENT 'token过期时间',
+--   PRIMARY KEY (`id`),
+--   UNIQUE KEY `name` (`name`)
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Table structure for role

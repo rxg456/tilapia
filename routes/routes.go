@@ -2,12 +2,14 @@ package routes
 
 import (
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
 	"tilapia/controller"
 	"tilapia/logger"
 	"tilapia/middleware"
+	reqApi "tilapia/routes/api"
 	"tilapia/settings"
-
-	"github.com/gin-gonic/gin"
 )
 
 func Setup(mode string) *gin.Engine {
@@ -21,31 +23,29 @@ func Setup(mode string) *gin.Engine {
 		c.String(http.StatusOK, settings.Conf.Version)
 	})
 	apiv1 := r.Group("/apiv1", middleware.TokenAuthMiddleware())
+	// apiv1 := r.Group("/apiv1")
 	{
-		// 用户登录
-		apiv1.POST("/user/login", controller.Login)
-		apiv1.POST("/user/logout", controller.Logout)
-		apiv1.GET("/user/perms/:id", controller.GetUserMenu)
+		// 用户
+		apiv1.POST(reqApi.LOGIN, controller.Login)
+		apiv1.GET(reqApi.LOGIN_STATUS, controller.LoginStatus)
+		apiv1.POST(reqApi.LOGOUT, controller.Logout)
 
-		apiv1.GET("/user", controller.GetUsers)
-		apiv1.POST("/user", controller.PostUser)
-		apiv1.PUT("/user/:id", controller.PutUser)
-		apiv1.PATCH("/user/:id", controller.PatchUser)
-		apiv1.DELETE("/user/:id", controller.DeleteUser)
+		apiv1.POST(reqApi.MY_USER_SETTING, controller.MyUserSetting)
+		apiv1.POST(reqApi.MY_USER_PASSWORD, controller.MyUserPassword)
 
-		apiv1.GET("/perms", controller.GetPerms)
-		apiv1.POST("/perms", controller.PostPerms)
-		apiv1.PUT("/perms/:id", controller.PutPerms)
-		apiv1.DELETE("/perms/:id", controller.DeletePerms)
-		apiv1.GET("/perms/lists", controller.GetAllPerms)
+		apiv1.POST(reqApi.USER_ADD, controller.UserAdd)
+		apiv1.POST(reqApi.USER_UPDATE, controller.UserUpdate)
+		apiv1.GET(reqApi.USER_LIST, controller.UserList)
+		apiv1.GET(reqApi.USER_EXISTS, controller.UserExists)
+		apiv1.GET(reqApi.USER_DETAIL, controller.UserDetail)
+		apiv1.POST(reqApi.USER_DELETE, controller.UserDelete)
 
-		apiv1.GET("/roles", controller.GetRole)
-		apiv1.POST("/roles", controller.PostRole)
-		apiv1.PUT("/roles/:id", controller.PutRole)
-		apiv1.DELETE("/roles/:id", controller.DeleteRole)
-		apiv1.GET("/roles/:id/permissions", controller.GetRolePerms)
-		apiv1.POST("/roles/:id/permissions", controller.PostRolePerms)
-
+		apiv1.GET(reqApi.USER_ROLE_PRIV_LIST, controller.RolePrivList)
+		apiv1.POST(reqApi.USER_ROLE_ADD, controller.RoleAdd)
+		apiv1.POST(reqApi.USER_ROLE_UPDATE, controller.RoleUpdate)
+		apiv1.GET(reqApi.USER_ROLE_LIST, controller.RoleList)
+		apiv1.GET(reqApi.USER_ROLE_DETAIL, controller.RoleDetail)
+		apiv1.POST(reqApi.USER_ROLE_DELETE, controller.RoleDelete)
 	}
 
 	return r
