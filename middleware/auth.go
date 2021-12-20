@@ -10,13 +10,22 @@ import (
 	reqApi "tilapia/routes/api"
 
 	"github.com/gin-gonic/gin"
+	"github.com/infraboard/mcube/logger/zap"
 )
 
 func TokenAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// 去除url中的/apiv1
+		path := strings.TrimSpace(c.Request.URL.Path)
+		if len(path) < 6 {
+			zap.L().Error("request path is too short")
+			util.JsonRespond(500, "request path is too short", "", c)
+			return
+		}
+		path = path[6:]
+
 		// 如果是登录操作请求 不检查Token
-		path := c.Request.URL.String()
-		if path == "/apiv1/login" {
+		if path == reqApi.LOGIN {
 			return
 		}
 
@@ -30,7 +39,6 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		}
 		token = parts[1]
 
-		fmt.Println(token)
 		if token == "" {
 			util.JsonRespond(401, "no login", "", c)
 			c.Abort()
@@ -40,13 +48,12 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		login := &user.Login{
 			Token: token,
 		}
-
-		if err := login.ValidateToken(token); err != nil {
+		if err := login.ValidateToken(); err != nil {
 			util.JsonRespond(401, "Invalid API token, please login", "", c)
+			zap.L().Error("校验token错误", zap.Error(err))
 			c.Abort()
 			return
 		}
-
 
 		//priv check
 		role := &user.Role{
@@ -73,7 +80,6 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			c.Next()
 			return
 		}
-
 		if pass := user.CheckHavePriv(path, role.Privilege); !pass {
 			util.JsonRespond(401, "no priv", "", c)
 			return
@@ -82,26 +88,3 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-// func PermissionCheckMiddleware(c *gin.Context, perm string) bool {
-// 	UserIsSupper, _ := c.Get("UserIsSupper")
-
-// 	// 超级用户不做权限检查
-// 	if UserIsSupper != 1 {
-// 		key := redis.RoleRermsSetKey
-// 		UserRid, _ := c.Get("UserRid")
-// 		str := fmt.Sprintf("%v", UserRid)
-// 		user_key := key + str
-
-// 		// redis是否有key值
-// 		if err := redis.Rdb.Exists(user_key).Val(); err != 1 {
-// 			rid, _ := UserRid.(int)
-// 			models.SetRolePermToSet(user_key, rid)
-// 		}
-
-// 		// 检查对应的set是否有该角色权限
-// 		return redis.CheckMemberByKey(user_key, perm)
-// 	} else {
-// 		return true
-// 	}
-// }

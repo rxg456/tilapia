@@ -14,24 +14,29 @@ type Token struct {
 }
 
 func (t *Token) DeleteByUserId() error {
-    token := &models.UserToken{}
-    if ok := token.DeleteByFields(models.QueryParam{
-        Where: []models.WhereParam{
-            models.WhereParam{
-                Field: "user_id",
-                Prepare: t.UserId,
-            },
-        },
-    }); !ok {
-        return errors.New("delete user token failed")
-    }
-    return nil
+	token := &models.UserToken{}
+	if ok := token.DeleteByFields(models.QueryParam{
+		Where: []models.WhereParam{
+			models.WhereParam{
+				Field:   "user_id",
+				Prepare: t.UserId,
+			},
+		},
+	}); !ok {
+		return errors.New("delete user token failed")
+	}
+	return nil
 }
 
 func (t *Token) ValidateToken() bool {
-	if t.UserId == 0 || t.Token == "" {
+	// if t.UserId == 0 || t.Token == "" {
+	// 	return false
+	// }
+	// TODO
+	if t.Token == "" {
 		return false
 	}
+
 	token := &models.UserToken{}
 	if ok := token.GetOne(models.QueryParam{
 		Where: []models.WhereParam{
@@ -51,7 +56,6 @@ func (t *Token) ValidateToken() bool {
 	}
 	return true
 }
-
 
 func (t *Token) CreateOrUpdate() error {
 	token := &models.UserToken{}

@@ -23,10 +23,10 @@ type Login struct {
 }
 
 func (login *Login) Logout() error {
-    token := &Token{
-        UserId: login.UserId,
-    }
-    return token.DeleteByUserId()
+	token := &Token{
+		UserId: login.UserId,
+	}
+	return token.DeleteByUserId()
 }
 
 func (login *Login) Login() string {
@@ -93,14 +93,14 @@ func (login *Login) createToken() error {
 	return nil
 }
 
-func (login *Login) ValidateToken(t string) error {
+func (login *Login) ValidateToken() error {
 	token := &Token{
-		Token: t,
+		Token:  login.Token,
+		UserId: login.UserId,
 	}
 	if ok := token.ValidateToken(); !ok {
 		return errors.New("token check failed, maybe your account is logged in on another device or token expired")
 	}
-
 	//get user detail
 	user := &User{
 		ID: token.UserId,

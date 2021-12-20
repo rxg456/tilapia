@@ -44,8 +44,7 @@ func LoginStatus(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	var dataResource LoginBind
-
-	if err := c.ShouldBind(&dataResource); err != nil {
+	if err := c.BindJSON(&dataResource); err != nil {
 		util.JsonRespond(500, "Login with invalid param", "", c)
 		zap.L().Error("controller.Login with invalid param:", zap.Error(err))
 		return
